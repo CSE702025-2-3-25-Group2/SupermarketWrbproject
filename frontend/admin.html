@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Trị Siêu Thị</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+    <!-- Thanh Điều Hướng -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+        <a class="navbar-brand fw-bold" href="#"><i class="bi bi-speedometer2 me-2"></i>HỆ THỐNG ADMIN</a>
+        <div class="ms-auto d-flex align-items-center">
+            <a class="btn btn-sm btn-primary me-3 fw-bold" href="index.html"><i class="bi bi-cart4"></i> Vào Quầy POS</a>
+            <button class="btn btn-sm btn-danger" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+        </div>
+    </nav>
+
+    <div class="container-fluid my-4">
+        <div class="row">
+            <!-- Sidebar Tabs Menu -->
+            <div class="col-md-2 mb-3">
+                <div class="list-group shadow-sm" id="adminTabs" role="tablist">
+                    <button class="list-group-item list-group-item-action active" data-bs-toggle="tab" data-bs-target="#tab-products" type="button"><i class="bi bi-box-seam me-2"></i>Kho Sản Phẩm</button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="tab" data-bs-target="#tab-categories-suppliers" type="button"><i class="bi bi-tags me-2"></i>Danh Mục & Đôi Tác</button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="tab" data-bs-target="#tab-import" type="button"><i class="bi bi-box-arrow-in-down me-2"></i>Nhập Hàng Kho</button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="tab" data-bs-target="#tab-customers" type="button"><i class="bi bi-people me-2"></i>Khách Hàng</button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="tab" data-bs-target="#tab-orders" type="button"><i class="bi bi-receipt-cutoff me-2"></i>Lịch Sử Hóa Đơn</button>
+                </div>
+            </div>
+
+            <!-- Nội Dung Các Tab -->
+            <div class="col-md-10">
+                <div class="tab-content bg-white p-4 shadow-sm rounded border">
+                    
+                    <!-- 1. TAB KHO SẢN PHẨM -->
+                    <div class="tab-pane fade show active" id="tab-products">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="fw-bold text-primary">Quản Lý Kho Hàng</h4>
+                            <button class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#addProductModal"><i class="bi bi-plus-circle me-1"></i> Thêm Sản Phẩm</button>
+                        </div>
+                        <!-- Ô TÌM KIẾM SẢN PHẨM MỚI NÂNG CẤP -->
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                            <input type="text" id="searchProduct" class="form-control" placeholder="Tìm kiếm nhanh sản phẩm theo tên hoặc mã vạch...">
+                        </div>
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mã Vạch</th>
+                                    <th>Tên Sản Phẩm</th>
+                                    <th>Giá Bán</th>
+                                    <th>Tồn Kho</th>
+                                    <th>Đơn Vị</th>
+                                    <th>Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- 2. TAB DANH MỤC & NHÀ CUNG CẤP (MỚI) -->
+                    <div class="tab-pane fade" id="tab-categories-suppliers">
+                        <div class="row">
+                            <!-- Quản Lý Danh Mục -->
+                            <div class="col-md-5 mb-4">
+                                <h4 class="fw-bold text-success mb-3">Danh Mục Sản Phẩm</h4>
+                                <div class="input-group mb-3">
+                                    <input type="text" id="newCategoryName" class="form-control" placeholder="Tên danh mục mới...">
+                                    <button class="btn btn-success" id="addCategoryBtn">Thêm</button>
+                                </div>
+                                <ul class="list-group" id="categoryListGroup"></ul>
+                            </div>
+                            <!-- Quản Lý Nhà Cung Cấp -->
+                            <div class="col-md-7">
+                                <h4 class="fw-bold text-success mb-3">Nhà Cung Cấp (Đối Tác)</h4>
+                                <form id="supplierForm" class="row g-2 mb-3">
+                                    <div class="col-sm-4"><input type="text" id="supplierName" class="form-control" placeholder="Tên đối tác..." required></div>
+                                    <div class="col-sm-4"><input type="text" id="supplierPhone" class="form-control" placeholder="Số điện thoại..."></div>
+                                    <div class="col-sm-4"><input type="text" id="supplierAddress" class="form-control" placeholder="Địa chỉ..."></div>
+                                    <div class="col-12"><button type="submit" class="btn btn-primary w-100 fw-bold">Thêm Nhà Cung Cấp</button></div>
+                                </form>
+                                <table class="table table-bordered align-middle table-sm">
+                                    <thead class="table-secondary">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên Đối Tác</th>
+                                            <th>Điện Thoại</th>
+                                            <th>Địa Chỉ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="supplierTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. TAB NHẬP HÀNG KHO (MỚI) -->
+                    <div class="tab-pane fade" id="tab-import">
+                        <h4 class="fw-bold text-warning mb-3">Lập Phiếu Nhập Hàng Mới</h4>
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">1. Chọn Nhà Cung Cấp</label>
+                                <select id="importSupplierSelect" class="form-select"></select>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label fw-bold">2. Chọn nhanh sản phẩm cần nhập số lượng</label>
+                                <select id="importProductSelect" class="form-select"></select>
+                            </div>
+                        </div>
+                        
+                        <h5 class="fw-bold text-secondary">Danh sách sản phẩm nhập trong phiếu</h5>
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sản Phẩm</th>
+                                    <th style="width: 20%">Giá Vốn Nhập (đ)</th>
+                                    <th style="width: 15%">Số Lượng Nhập</th>
+                                    <th style="width: 20%">Thành Tiền</th>
+                                    <th style="width: 10%">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="importTableBody"></tbody>
+                        </table>
+                        <div class="text-end mb-3">
+                            <h4 class="fw-bold">Tổng Tiền Nhập: <span text-danger id="importTotalAmount">0 đ</span></h4>
+                        </div>
+                        <button class="btn btn-warning btn-lg w-100 fw-bold" id="submitImportBtn"><i class="bi bi-box-arrow-in-down"></i> XÁC NHẬN NHẬP KHO & CỘNG DỒN SỐ LƯỢNG</button>
+                    </div>
+
+                    <!-- 4. TAB KHÁCH HÀNG -->
+                    <div class="tab-pane fade" id="tab-customers">
+                        <h4 class="fw-bold text-info mb-3">Danh Sách Khách Hàng</h4>
+                        <!-- Ô TÌM KIẾM KHÁCH HÀNG MỚI NÂNG CẤP -->
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                            <input type="text" id="searchCustomer" class="form-control" placeholder="Tìm kiếm nhanh khách hàng theo Họ tên hoặc Số điện thoại...">
+                        </div>
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-info">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Họ Và Tên</th>
+                                    <th>Số Điện Thoại</th>
+                                    <th>Điểm Tích Lũy</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customerTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- 5. TAB LỊCH SỬ HÓA ĐƠN -->
+                    <div class="tab-pane fade" id="tab-orders">
+                        <h4 class="fw-bold text-danger mb-3">Lịch Sử Giao Dịch Hóa Đơn</h4>
+                        <!-- Ô TÌM KIẾM HÓA ĐƠN MỚI NÂNG CẤP -->
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                            <input type="text" id="searchOrder" class="form-control" placeholder="Tìm kiếm nhanh hóa đơn theo Mã HD hoặc thông tin giao dịch...">
+                        </div>
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-danger">
+                                <tr>
+                                    <th>Mã HD</th>
+                                    <th>Thời Gian</th>
+                                    <th>Khách Hàng</th>
+                                    <th>Tổng Tiền</th>
+                                    <th>Thu Ngân</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- Script hỗ trợ chuyển Tab và hiệu ứng của Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script xử lý logic chính -->
+    <script src="js/admin.js"></script>
+</body>

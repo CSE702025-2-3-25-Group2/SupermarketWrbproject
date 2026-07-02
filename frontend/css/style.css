@@ -1,0 +1,70 @@
+/* Khởi tạo phông chữ hiện đại cho toàn trang */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Hiệu ứng màu nền chuyển sắc nhẹ nhàng */
+}
+
+/* Tinh chỉnh khung đăng nhập (Card) */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hiệu ứng nổi lên nhẹ khi di chuột vào khung */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Đẹp hóa các ô nhập liệu */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hiệu ứng khi nhấn chuột vào ô nhập liệu (Focus) */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* Tinh chỉnh nút Đăng nhập */
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+}
+
+.btn-primary:active {
+    background-color: #0a58ca;
+}
+/* Thiết lập cấu hình chuyên dụng khi in ấn */
+@media print {
+    /* Ẩn toàn bộ mọi thứ trên trang web */
+    body * {
+        visibility: hidden;
+    }
+    /* Chỉ hiển thị duy nhất khu vực chứa hóa đơn trong Modal */
+    #invoiceCapture, #invoiceCapture * {
+        visibility: visible;
+    }
+    /* Đẩy khối hóa đơn lên góc trên cùng bên trái của trang giấy in */
+    #invoiceCapture {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    /* Ẩn bóng mờ và viền modal khi in */
+    .modal-content, .modal-body {
+        border: none !important;
+        box-shadow: none !important;
+    }
+}
